@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate, useLocation, Link } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 import translations from "./translations";
 import Navbar from "./components/Navbar";
@@ -10,8 +10,6 @@ import Contact from "./components/Contact/Contact";
 import Footer from "./components/Footer/Footer";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import Premium404Page from "./pages/404Page";
-
-
 
 const AnimatedPage = ({ children }) => {
   const [visible, setVisible] = useState(false);
@@ -40,7 +38,9 @@ function App() {
   const [pendingScrollId, setPendingScrollId] = useState(null);
   const [darkMode, setDarkMode] = useState(() => {
     const stored = localStorage.getItem("theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefersDark = window.matchMedia(
+      "(prefers-color-scheme: dark)"
+    ).matches;
     return stored === "dark" || (!stored && prefersDark);
   });
 
@@ -98,28 +98,8 @@ function App() {
   }, [location.pathname, pendingScrollId]);
 
   // Language toggle
-  const toggleLanguage = () => setLanguage((prev) => (prev === "en" ? "fr" : "en"));
-
-  // Auth
-  const handleLogin = (rememberMe, username) => {
-    setIsAdminLoggedIn(true);
-    if (rememberMe) {
-      localStorage.setItem("adminLoggedIn", "true");
-      localStorage.setItem("adminName", username);
-    } else {
-      localStorage.removeItem("adminLoggedIn");
-      localStorage.removeItem("adminName");
-    }
-  };
-
-  const handleLogout = () => {
-    setIsAdminLoggedIn(false);
-    localStorage.removeItem("adminLoggedIn");
-    localStorage.removeItem("adminName");
-  };
-
-  const ProtectedRoute = ({ children }) =>
-    !isAdminLoggedIn ? <Navigate to="/admin" replace /> : children;
+  const toggleLanguage = () =>
+    setLanguage((prev) => (prev === "en" ? "fr" : "en"));
 
   const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
