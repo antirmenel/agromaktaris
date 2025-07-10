@@ -99,7 +99,7 @@ const Contact = ({ t = {}, id = "contact" }) => {
     setFormStatus("sending");
 
     try {
-      const response = await fetch("/api/send-email", {
+      const response = await fetch("https://agromaktaris.netlify.app/api/send-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
