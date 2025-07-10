@@ -1,10 +1,10 @@
 [build]
   command = "npm install && cd client && npm install && npm run build"
   publish = "client/build"
-  functions = "server"
+  functions = "netlify/functions"
 
 [build.environment]
-  NODE_VERSION = "18"  # Match your React version's Node requirement
+  NODE_VERSION = "18"
 
 [functions]
   node_bundler = "esbuild"
@@ -12,7 +12,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/server/:splat"
+  to = "/.netlify/functions/send-email"
   status = 200
   force = true
 

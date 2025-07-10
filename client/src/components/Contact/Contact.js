@@ -62,7 +62,9 @@ const Contact = ({ t = {}, id = "contact" }) => {
       const prefersReducedMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
       ).matches;
-      prefersReducedMotion ? controls.set("visible") : controls.start("visible");
+      prefersReducedMotion
+        ? controls.set("visible")
+        : controls.start("visible");
     }
   }, [isInView, controls]);
 
@@ -81,44 +83,46 @@ const Contact = ({ t = {}, id = "contact" }) => {
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  
-  // Validate required fields
-  if (!formData.name || !formData.email || !formData.subject || !formData.message) {
-    setFormStatus("error");
-    return;
-  }
+    e.preventDefault();
 
-  setFormStatus("sending");
-
-  try {
-    const response = await fetch("/.netlify/functions/server/api/send-email", {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-      },
-      body: JSON.stringify(formData)
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(errorData.error || "Request failed");
+    // Validate required fields
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.subject ||
+      !formData.message
+    ) {
+      setFormStatus("error");
+      return;
     }
 
-    const result = await response.json();
-    console.log("Success:", result);
-    setFormStatus("success");
-    setFormData({ name: "", email: "", subject: "", message: "" });
-    
-    setTimeout(() => setFormStatus("idle"), 5000);
-    
-  } catch (error) {
-    console.error("Error:", error);
-    setFormStatus("error");
-    setTimeout(() => setFormStatus("idle"), 5000);
-  }
-};
+    setFormStatus("sending");
+
+    try {
+      const response = await fetch("/api/send-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+      console.log("Success:", result);
+      setFormStatus("success");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+
+      setTimeout(() => setFormStatus("idle"), 5000);
+    } catch (error) {
+      console.error("Error:", error);
+      setFormStatus("error");
+      setTimeout(() => setFormStatus("idle"), 5000);
+    }
+  };
 
   const contactInfo = [
     {
@@ -321,23 +325,27 @@ const Contact = ({ t = {}, id = "contact" }) => {
                 </div>
 
                 {/* Validation Error */}
-                {formStatus === "error" && (!formData.name || !formData.email || !formData.subject || !formData.message) && (
-                  <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="text-red-500 text-sm"
-                  >
-                    Please fill all required fields
-                  </motion.div>
-                )}
+                {formStatus === "error" &&
+                  (!formData.name ||
+                    !formData.email ||
+                    !formData.subject ||
+                    !formData.message) && (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="text-red-500 text-sm"
+                    >
+                      Please fill all required fields
+                    </motion.div>
+                  )}
 
                 {/* Submit Button */}
                 <motion.button
                   type="submit"
                   disabled={formStatus === "sending"}
                   className={`w-full py-4 px-6 rounded-sm font-medium text-white tracking-wide ${
-                    formStatus === "sending" 
-                      ? "bg-gray-400 cursor-not-allowed" 
+                    formStatus === "sending"
+                      ? "bg-gray-400 cursor-not-allowed"
                       : "bg-gradient-to-br from-yellow-500 to-yellow-600 hover:from-yellow-500 hover:to-yellow-500"
                   } shadow-md transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-yellow-400/50`}
                   whileHover={formStatus !== "sending" ? { scale: 1.01 } : {}}
@@ -366,16 +374,20 @@ const Contact = ({ t = {}, id = "contact" }) => {
                     {t.contact?.form?.success}
                   </motion.div>
                 )}
-                {formStatus === "error" && formData.name && formData.email && formData.subject && formData.message && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex items-center gap-2 text-red-500 text-sm mt-3"
-                  >
-                    <AlertCircle className="w-4 h-4" />
-                    {t.contact?.form?.error}
-                  </motion.div>
-                )}
+                {formStatus === "error" &&
+                  formData.name &&
+                  formData.email &&
+                  formData.subject &&
+                  formData.message && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="flex items-center gap-2 text-red-500 text-sm mt-3"
+                    >
+                      <AlertCircle className="w-4 h-4" />
+                      {t.contact?.form?.error}
+                    </motion.div>
+                  )}
               </form>
             </div>
           </motion.div>
@@ -394,7 +406,9 @@ const Contact = ({ t = {}, id = "contact" }) => {
                 }`}
               >
                 <span
-                  dangerouslySetInnerHTML={{ __html: t.contact?.infoTitle || "" }}
+                  dangerouslySetInnerHTML={{
+                    __html: t.contact?.infoTitle || "",
+                  }}
                 />
               </h3>
 
@@ -449,7 +463,9 @@ const Contact = ({ t = {}, id = "contact" }) => {
                                 dangerouslySetInnerHTML={{ __html: value }}
                               />
                             ) : (
-                              <span dangerouslySetInnerHTML={{ __html: value }} />
+                              <span
+                                dangerouslySetInnerHTML={{ __html: value }}
+                              />
                             )}
                           </div>
                         </div>
