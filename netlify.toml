@@ -1,17 +1,20 @@
 [build]
-  command = "cd client && npm install && npm run build"
+  command = "npm install && cd client && npm install && npm run build"
   publish = "client/build"
-  functions = "server"  # Points to your server directory
+  functions = "server"
+
+[build.environment]
+  NODE_VERSION = "18"  # Match your React version's Node requirement
 
 [functions]
-  node_bundler = "esbuild"  # Faster bundling for Netlify Functions
-  external_node_modules = ["nodemailer"]  # Required for email sending
+  node_bundler = "esbuild"
+  external_node_modules = ["nodemailer"]
 
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/server/:splat"
   status = 200
-  force = true  # Important for overriding default behavior
+  force = true
 
 [[headers]]
   for = "/api/*"
