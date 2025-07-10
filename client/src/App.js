@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation, Link } from "react-router-dom";
-import { motion } from "framer-motion";
 
 import translations from "./translations";
 import Navbar from "./components/Navbar";
@@ -12,19 +11,7 @@ import Footer from "./components/Footer/Footer";
 import ScrollToTopButton from "./components/ScrollToTopButton";
 import Premium404Page from "./pages/404Page";
 
-// Fallback 404 component (optional if Premium404Page is used)
-const NotFound = () => (
-  <div className="min-h-screen flex flex-col justify-center items-center bg-cream dark:bg-olive-dark text-center p-4">
-    <h1 className="text-6xl font-bold mb-4">404</h1>
-    <p className="text-xl mb-6">Oops! The page you are looking for does not exist.</p>
-    <Link
-      to="/"
-      className="px-4 py-2 bg-olive text-cream rounded hover:bg-olive-dark transition"
-    >
-      Go to Home
-    </Link>
-  </div>
-);
+
 
 const AnimatedPage = ({ children }) => {
   const [visible, setVisible] = useState(false);
